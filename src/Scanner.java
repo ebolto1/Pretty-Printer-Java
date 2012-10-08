@@ -3,155 +3,179 @@
 import java.io.*;
 
 class Scanner {
-  private PushbackInputStream in;
-  private byte[] buf = new byte[1000];
+	private PushbackInputStream in;
+	private byte[] buf = new byte[1000];
 
-  public Scanner(InputStream i) { in = new PushbackInputStream(i); }
-    
-  public Token getNextToken() {
-    int bite = -1;
-	
-    // It would be more efficient if we'd maintain our own input buffer
-    // and read characters out of that buffer, but reading individual
-    // characters from the input stream is easier.
-    try {
-      bite = in.read();
-    } catch (IOException e) {
-      System.err.println("We fail: " + e.getMessage());
-    }
+	public Scanner(InputStream i) { in = new PushbackInputStream(i); }
 
-    // TODO: skip white space and comments
-    char cbite = (char)bite;
-	if(cbite == ' ' || cbite == '\t' || cbite == '\n' || cbite == '\r' || cbite == '\f')
-		return getNextToken();
-	if(cbite == ';')
-	{
-		try{
-			while(in.read() != '\n');
-		}catch(IOException e){
-			System.err.println("WE FAIL:" + e.getMessage());
-			bite = -1; 
+	public Token getNextToken() {
+		int bite = -1;
+
+		// It would be more efficient if we'd maintain our own input buffer
+		// and read characters out of that buffer, but reading individual
+		// characters from the input stream is easier.
+		try {
+			bite = in.read();
+		} catch (IOException e) {
+			System.err.println("We fail: " + e.getMessage());
 		}
-		return getNextToken();
-	}
-    if (bite == -1)
-      return null;
 
-    char ch = (char) bite;
-	
-    // Special characters
-    if (ch == '\'')
-      return new Token(Token.QUOTE);
-    else if (ch == '(')
-      return new Token(Token.LPAREN);
-    else if (ch == ')')
-      return new Token(Token.RPAREN);
-    else if (ch == '.')
-      // We ignore the special identifier `...'.
-      return new Token(Token.DOT);
+		//Skip whitespace and comments
+		char cbite = (char)bite;
+		if(cbite == ' ' || cbite == '\t' || cbite == '\n' || cbite == '\r' || cbite == '\f')
+			return getNextToken();
+		if(cbite == ';')
+		{
+			try{
+				while(in.read() != '\n');
+			}catch(IOException e){
+				System.err.println("WE FAIL:" + e.getMessage());
+				bite = -1; 
+			}
+			return getNextToken();
+		}
+		if (bite == -1)
+			return null;
 
-    // Boolean constants
-    else if (ch == '#') {
-      try {
-	bite = in.read();
-      } catch (IOException e) {
-	System.err.println("We fail: " + e.getMessage());
-      }
+		char ch = (char) bite;
 
-      if (bite == -1) {
-	System.err.println("Unexpected EOF following #");
-	return null;
-      }
-      ch = (char) bite;
-      if (ch == 't')
-	return new Token(Token.TRUE);
-      else if (ch == 'f')
-	return new Token(Token.FALSE);
-      else {
-	System.err.println("Illegal character '" + (char) ch + "' following #");
-	return getNextToken();
-      }
-    }
+		// Special characters
+		if (ch == '\'')
+			return new Token(Token.QUOTE);
+		else if (ch == '(')
+			return new Token(Token.LPAREN);
+		else if (ch == ')')
+			return new Token(Token.RPAREN);
+		else if (ch == '.')
+			// We ignore the special identifier `...'.
+			return new Token(Token.DOT);
 
-    // String constants
-    else if (ch == '"') {
-      // TODO: scan a string into the buffer variable buf -NEED FIX
-    	int i;
-    	for(i = 0; i<buf.length; i++)
-    	{
-    		try{
-    			ch = (char)in.read();
-    			if(ch == '\\')
-    			{
-    				ch = (char)in.read();
-    				switch(ch){
-    				case'\\':
-    					buf[i] = '\\';
-    					continue;
-    				case'\"':
-    					buf[i] = '\"';
-    					continue;
-    				case't':
-    					buf[i] = '\t';
-    					continue;
-    				case'n':
-    					buf[i] = '\n';
-    					continue;
-    				case'f':
-    					buf[i] = '\f';
-    					continue;
-    				default:
-    					throw new IllegalArgumentException("Invalid escape sequence");
-    				}
-    			}
-    			if(ch == '\"')
-    				break;
-    			buf[i] = (byte)ch;
-    			
-    			
-    		}
-    	    catch(IOException e){
-    	    	System.err.println("WE FAIL:" + e.getMessage());
-    	    	
-    	    }
-    		catch(IllegalArgumentException e)
-    		{
-    			System.err.println("Something went wrong: " + e.getMessage());
-    		}
-    	}
-    
-      byte[] str = new byte[i];	
-      for(int j = 0; j <i; j++)
-      {
-    	  str[j] = buf[j]; 
-      }
-      return new StrToken(new String(str));
-    }
+		// Boolean constants
+		else if (ch == '#') {
+			try {
+				bite = in.read();
+			} catch (IOException e) {
+				System.err.println("We fail: " + e.getMessage());
+			}
 
-    // Integer constants
-    else if (ch >= '0' && ch <= '9') {
-      int i = ch - '0';
-      // TODO: scan the number and convert it to an integer
-      
-      // put the character after the integer back into the input
-      // in->putback(ch);
-      return new IntToken(i);
-    }
+			if (bite == -1) {
+				System.err.println("Unexpected EOF following #");
+				return null;
+			}
+			ch = (char) bite;
+			if (ch == 't')
+				return new Token(Token.TRUE);
+			else if (ch == 'f')
+				return new Token(Token.FALSE);
+			else {
+				System.err.println("Illegal character '" + (char) ch + "' following #");
+				return getNextToken();
+			}
+		}
 
-    // Identifiers
-    else if (ch >= 'A' && ch <= 'Z'
-	     /* or ch is some other valid first character for an identifier */) {
-      // TODO: scan an identifier into the buffer
+		// String constants
+		else if (ch == '"') {
+			// TODO: scan a string into the buffer variable buf -NEED FIX
+			int i;
+			for(i = 0; i<buf.length; i++)
+			{
+				try{
+					ch = (char)in.read();
+					if(ch == '\\')
+					{
+						ch = (char)in.read();
+						switch(ch){
+						case'\\':
+							buf[i] = '\\';
+							continue;
+						case'\"':
+							buf[i] = '\"';
+							continue;
+						case't':
+							buf[i] = '\t';
+							continue;
+						case'n':
+							buf[i] = '\n';
+							continue;
+						case'f':
+							buf[i] = '\f';
+							continue;
+						default:
+							throw new IllegalArgumentException("Invalid escape sequence");
+						}
+					}
+					if(ch == '\"')
+						break;
+					buf[i] = (byte)ch;   			   			
+				}
+				catch(IOException e){
+					System.err.println("WE FAIL:" + e.getMessage());    	
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.err.println("Something went wrong: " + e.getMessage());
+				}	
+			}
 
-      // put the character after the identifier back into the input
-      // in->putback(ch);
-      return new IdentToken(buf.toString());
-    }
+			byte[] str = new byte[i];	
+			for(int j = 0; j <i; j++)
+			{
+				str[j] = buf[j]; 
+			}
+			return new StrToken(new String(str));
+		}
 
-    // Illegal character
-    else {
-      System.err.println("Illegal input character '" + (char) ch + '\'');
-      return getNextToken();
-    }
-  };
+		// Integer constants
+		else if (ch >= '0' && ch <= '9') {
+			int i = ch - '0';
+			// TODO: scan the number and convert it to an integer
+
+			// put the character after the integer back into the input
+			// in->putback(ch);
+			return new IntToken(i);
+		}
+
+		//Identifiers
+		else if (ch == '+' || ch =='-') //Identifier cannot start with these, but these by themselves are identifiers
+		{
+			return new IdentToken(""+ch);
+		}
+		else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || ch == '/' || ch == '*' || 
+				(ch >= '<' && ch <= '?') || ch == '!' || (ch >= '$' && ch <= '@') || ch == ':' 
+				|| ch == '_' || ch == '~' || ch == '^') {
+			try {
+				int i;
+				for (i = 0; i < buf.length; i++)
+				{
+					buf[i] = (byte)ch;
+					ch = (char)in.read();
+					if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '<' && ch <= '?') || (ch >= '-' && ch <= ':')
+							|| ch == '!' || (ch >= '$' && ch <= '@') || ch == '_' || ch == '~' || ch == '^' || ch == '*' || ch == '+') continue;
+					else
+					{
+						in.unread((int)ch); // put the character after the identifier back into the input
+						break;
+					}
+				}
+
+				byte[] id = new byte[i+1];	
+				for(int j = 0; j <= i; j++)
+				{
+					id[j] = buf[j]; 
+				}
+				String idStr = new String(id);
+				return new IdentToken(idStr.toLowerCase());
+			}
+			catch(IOException e) {
+				System.err.println("WE FAIL:" + e.getMessage());    
+				return getNextToken();
+			}
+		}
+
+		// Illegal character
+		else {
+			System.err.println("Illegal input character '" + (char) ch + '\'');
+			return getNextToken();
+		}
+	};
 }
