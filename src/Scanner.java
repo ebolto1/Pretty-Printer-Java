@@ -130,9 +130,7 @@ class Scanner {
 			try{	
 				for(j=0; j<buf.length; j++){
 					byte i = (byte) (ch - '0');
-					System.out.println("dbg; "+ i);
-					buf[j]=i;
-					System.out.println(buf[j]);
+					buf[j]=(byte)ch;
 					bite= in.read();
 					ch= (char) bite;
 					if(ch >= '0' && ch <= '9')
@@ -150,28 +148,21 @@ class Scanner {
 			} catch (IllegalArgumentException e){
 				System.out.println("something went wrong: " +e.getMessage());
 			}
-			// put the character after the integer back into the input
-			// in->putback(ch);
 			
-			/*int k=0;
-			for(int i=j; i>=0; i--)
-				k+=Math.pow(10, j-i)*buf[i];
-			*/
 			
-			byte[] foo = new byte[j+1];
+			byte[] temp = new byte[j+1];
 			
 			for(int i=0; i<=j; i++){
-				foo[i]=buf[i];
-				System.out.println("dbg "+buf[i]+" "+foo[i]);
+				temp[i]=buf[i];
 			}
-			int k;
-			System.out.println(new String(foo));
+			int k=Integer.MAX_VALUE;
 			try{
-				k=Integer.parseInt(new String(foo));
+				k=Integer.parseInt(new String(temp));
 			} catch (NumberFormatException n) {
-				System.out.println("Integer to big for int type: "+ new String(foo)+"\n Reset to Integer.MAX_VALUE");
-				k=Integer.MAX_VALUE;
+				System.out.println("Integer to big for int type: "+ new String(temp)+"\n Reset to Integer.MAX_VALUE");
 			}
+			
+			
 			return new IntToken(k);
 		}
 
