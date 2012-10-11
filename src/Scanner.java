@@ -22,7 +22,7 @@ class Scanner {
 
 		//Skip whitespace and comments
 		char cbite = (char)bite;
-		if(cbite == ' ' || cbite == '\t' || cbite == '\n' || cbite == '\r' || cbite == '\f')
+		if(isWhiteSpace(cbite))
 			return getNextToken();
 		if(cbite == ';')
 		{
@@ -75,7 +75,6 @@ class Scanner {
 
 		// String constants
 		else if (ch == '"') {
-			// TODO: scan a string into the buffer variable buf -NEED FIX
 			int i;
 			for(i = 0; i<buf.length; i++)
 			{
@@ -127,30 +126,66 @@ class Scanner {
 
 		// Integer constants
 		else if (ch >= '0' && ch <= '9') {
-			int i = ch - '0';
-			// TODO: scan the number and convert it to an integer
-
+			int j=0;
+			try{	
+				for(j=0; j<buf.length; j++){
+					byte i = (byte) (ch - '0');
+					System.out.println("dbg; "+ i);
+					buf[j]=i;
+					System.out.println(buf[j]);
+					bite= in.read();
+					ch= (char) bite;
+					if(ch >= '0' && ch <= '9')
+						continue;
+					else if(isWhiteSpace(ch)){
+						in.unread((byte)ch);
+						break;
+					}else {
+						throw new IllegalArgumentException("invalid integer; expected digit, received \'" +ch +"\'");
+					}
+				}
+			} catch (IOException e){
+				System.out.println("WE FAIL: ");
+				e.printStackTrace();
+			} catch (IllegalArgumentException e){
+				System.out.println("something went wrong: " +e.getMessage());
+			}
 			// put the character after the integer back into the input
 			// in->putback(ch);
-			return new IntToken(i);
+			
+			/*int k=0;
+			for(int i=j; i>=0; i--)
+				k+=Math.pow(10, j-i)*buf[i];
+			*/
+			
+			byte[] foo = new byte[j+1];
+			
+			for(int i=0; i<=j; i++){
+				foo[i]=buf[i];
+				System.out.println("dbg "+buf[i]+" "+foo[i]);
+			}
+			int k;
+			System.out.println(new String(foo));
+			try{
+				k=Integer.parseInt(new String(foo));
+			} catch (NumberFormatException n) {
+				System.out.println("Integer to big for int type: "+ new String(foo)+"\n Reset to Integer.MAX_VALUE");
+				k=Integer.MAX_VALUE;
+			}
+			return new IntToken(k);
 		}
 
 		//Identifiers
-		else if (ch == '+' || ch =='-') //Identifier cannot start with these, but these by themselves are identifiers
-		{
-			return new IdentToken(""+ch);
-		}
-		else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || ch == '/' || ch == '*' || 
-				(ch >= '<' && ch <= '?') || ch == '!' || (ch >= '$' && ch <= '@') || ch == ':' 
-				|| ch == '_' || ch == '~' || ch == '^') {
+		else if (isExtendedAlpha(ch)) {
 			try {
 				int i;
 				for (i = 0; i < buf.length; i++)
 				{
 					buf[i] = (byte)ch;
-					ch = (char)in.read();
-					if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '<' && ch <= '?') || (ch >= '-' && ch <= ':')
-							|| ch == '!' || (ch >= '$' && ch <= '@') || ch == '_' || ch == '~' || ch == '^' || ch == '*' || ch == '+') continue;
+					bite = in.read();
+					ch= (char)bite;
+					if ( isExtendedAlpha(ch) || (ch >= '0' && ch <= '9') )
+						continue;
 					else
 					{
 						in.unread((int)ch); // put the character after the identifier back into the input
@@ -178,4 +213,13 @@ class Scanner {
 			return getNextToken();
 		}
 	};
+	private boolean isExtendedAlpha(char ch){
+		return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '<' && ch <= '@' 
+				|| ch == '!' ||ch == '%' ||ch == '&' ||ch == '*' ||ch == '+' ||ch == '-' ||ch == '.' ||ch == '/' 
+				|| ch == ':' ||ch == '^' ||ch == '_' ||ch == '~' );
+				
+	}
+	private boolean isWhiteSpace(char ch){
+		return ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f';
+	}
 }
