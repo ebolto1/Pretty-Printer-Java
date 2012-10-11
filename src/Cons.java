@@ -27,5 +27,25 @@ class Cons extends Node {
     void print(int n, boolean p) {
 	form.print(this, n, p);
     }
-
+    //TODO: finish these overrides
+    @Override
+    public boolean isPair(){
+  	  return true;
+    }
+    @Override
+    public Node getCar(){
+  	  return null;
+    }
+    @Override
+    public Node getCdr(){
+  	  return null;
+    }
+    @Override
+    public void setCar(Node a){
+  	  return;
+    }
+    @Override
+    public void setCdr(Node d){
+  	  return;
+    }
 }

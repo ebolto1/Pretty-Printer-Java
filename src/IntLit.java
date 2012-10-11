@@ -10,4 +10,9 @@ class IntLit extends Node {
 
     System.out.println(intVal);
   }
+
+  @Override
+  public boolean isNumber(){
+	  return true;
+  }
 }

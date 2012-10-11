@@ -36,10 +36,15 @@
 class Parser {
   private Scanner scanner;
 
+  private Nil nil= new Nil();
+  private BooleanLit trueLit=new BooleanLit(true), falseLit=new BooleanLit(false);
+  
   public Parser(Scanner s) { scanner = s; }
+
   
   public Node parseExp() {
     // TODO: write code for parsing an exp
+	  Token t= scanner.getNextToken();
     return null;
   }
   

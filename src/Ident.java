@@ -10,4 +10,9 @@ class Ident extends Node {
 
     System.out.println(name);
   }
+  
+  @Override
+  public boolean isSymbol(){
+	  return true;
+  }
 }

@@ -13,4 +13,9 @@ class Nil extends Node {
       System.out.println("()");
     }
   }
+  
+  @Override
+  public boolean isNull(){
+	  return true;
+  }
 }
