@@ -15,4 +15,8 @@ class Ident extends Node {
   public boolean isSymbol(){
 	  return true;
   }
+  
+  public String getName() {
+	  return name;
+  }
 }

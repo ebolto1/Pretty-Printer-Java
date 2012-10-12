@@ -146,7 +146,7 @@ class Scanner {
 					ch= (char) bite;
 					if(ch >= '0' && ch <= '9')
 						continue;
-					else if(isWhiteSpace(ch)){
+					else if(isWhiteSpace(ch) || !isExtendedAlpha(ch)){
 						in.unread((byte)ch);
 						break;
 					}else {

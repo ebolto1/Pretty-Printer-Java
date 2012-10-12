@@ -47,7 +47,7 @@ class Parser {
 	  if (t == null) { //EOF
 		  exp = null;
 	  } else if (t.getType() == TokenType.LPAREN) {
-		  exp = new Cons(parseRest(), null);
+		  exp = parseRest();
 	  } else if (t.getType() == TokenType.FALSE) {
 		  exp = falseLit;
 	  } else if (t.getType() == TokenType.TRUE) {
@@ -92,6 +92,7 @@ class Parser {
 	              exp=parseExp();
 	          }
 	      } else { //exp
+	    	  scanner.putTokenBack(t);
 	          exp= new Cons(parseExp(), parseRest());
 	      }
 	   
