@@ -5,10 +5,21 @@ import java.io.*;
 class Scanner {
 	private PushbackInputStream in;
 	private byte[] buf = new byte[1000];
+	private Token putback = null;
 
 	public Scanner(InputStream i) { in = new PushbackInputStream(i); }
 
+	public void putTokenBack(Token t) {
+		putback = t;
+	}
+	
 	public Token getNextToken() {
+		if (putback != null) {
+			Token tmp = putback;
+			putback = null;
+			return tmp;
+		}
+		
 		int bite = -1;
 
 		// It would be more efficient if we'd maintain our own input buffer

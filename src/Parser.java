@@ -40,18 +40,63 @@ class Parser {
   private BooleanLit trueLit=new BooleanLit(true), falseLit=new BooleanLit(false);
   
   public Parser(Scanner s) { scanner = s; }
-
   
   public Node parseExp() {
-    // TODO: write code for parsing an exp
+	  Node exp = null;
 	  Token t= scanner.getNextToken();
-    return null;
+	  if (t == null) { //EOF
+		  exp = null;
+	  } else if (t.getType() == TokenType.LPAREN) {
+		  exp = new Cons(parseRest(), null);
+	  } else if (t.getType() == TokenType.FALSE) {
+		  exp = falseLit;
+	  } else if (t.getType() == TokenType.TRUE) {
+		  exp = trueLit;
+	  } else if (t.getType() == TokenType.QUOTE) {
+		  exp = new Cons(new Ident("'"), new Cons(parseExp(), null));
+	  } else if (t.getType() == TokenType.INT) {
+		  exp = new IntLit(t.getIntVal());
+	  } else if (t.getType() == TokenType.STRING) {
+		  exp = new StrLit(t.getStrVal());
+	  } else if (t.getType() == TokenType.IDENT) {
+		  exp = new Ident(t.getName());
+	  } else if (t.getType() == TokenType.RPAREN) {
+		  System.out.println("Unexpected Token: )");
+		  exp = parseExp();
+	  } else if (t.getType() == TokenType.DOT) {
+		  System.out.println("Unexpected Token: .");
+		  exp = parseExp();
+	  } else { //Generic Parsing Error
+		  System.out.println("Unexpected Token of Type: " + t.getType());
+	  }
+	  
+    return exp;
   }
   
   protected Node parseRest() {
-    // TODO: write code for parsing rest
-    return null;
-  }
+	    // TODO: write code for parsing rest
+	      Token t= scanner.getNextToken();
+	      Node exp= null;
+	      if(t == null) {
+	          exp=null;
+	      } else if (t.getType() == TokenType.RPAREN){
+	          return null;
+	      } else if (t.getType() == TokenType.DOT){
+	          //lookahead
+	          t=scanner.getNextToken();
+	          if(t.getType() != TokenType.RPAREN){
+	              scanner.putTokenBack(t);
+	              exp = new Cons(parseExp(), null);
+	          } else {
+	              System.out.println("unexpected: ')'");
+	              exp=parseExp();
+	          }
+	      } else { //exp
+	          exp= new Cons(parseExp(), parseRest());
+	      }
+	   
+	    return exp;
+	  }
   
   // TODO: Add any additional methods you might need.
 };
