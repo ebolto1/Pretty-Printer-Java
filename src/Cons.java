@@ -19,36 +19,36 @@ class Cons extends Node {
 			if (idName.equals("quote") || idName.equals("'")) {
 				form = new Quote((Cons)cdr);
 			} else if (idName.equals("lambda")) {
-				form = new Lambda();
+				form = new Lambda(this);
 			} else if (idName.equals("begin")) {
-				form = new Begin();
+				form = new Begin(this);
 			} else if (idName.equals("if")) {
-				form = new If();
+				form = new If(this);
 			} else if (idName.equals("let")) {
-				form = new Let();
+				form = new Let(this);
 			} else if (idName.equals("cond")) {
-				form = new Cond();
+				form = new Cond(this);
 			} else if (idName.equals("define")) {
-				form = new Define();
+				form = new Define(this);
 			} else if (idName.equals("set!")) {
-				form = new Set();
+				form = new Set(this);
 			} else {
-				form = new Regular(idName, this);
+				form = new Regular(this);
 			}
 		} else if (car instanceof IntLit) {
 			IntLit i = (IntLit)car;
-			form = new Regular(Integer.toString(i.getVal()), this);
+			form = new Regular(this);
 		} else if (car instanceof StrLit) {
 			StrLit s = (StrLit)car;
-			form= new Regular(s.getVal(), this);
+			form= new Regular(this);
 		} else if (car instanceof BooleanLit) {
 			BooleanLit b = (BooleanLit)car;
-			form = new Regular(Boolean.toString(b.getVal()), this);
+			form = new Regular(this);
 		} else if (car instanceof Nil) {
 			Nil n= (Nil)car;
-			form = new Regular("", this);
+			form = new Regular(this);
 		} else {
-			form= new Regular ("(", this);
+			form= new Regular (this);
 		}
 	}
 	// TODO: Add any helper functions for parseList as appropriate.
@@ -90,5 +90,8 @@ class Cons extends Node {
 	@Override
 	public void setCdr(Node d){
 		car = d;
+	}
+	public void printQuote(int n, boolean p){
+		form.printQuote(this,n, p);
 	}
 }

@@ -1,13 +1,46 @@
 import java.io.*;
 
 class Begin extends Special {
- 
-    // TODO: Add any fields needed.
 
- 
-    // TODO: Add an appropriate constructor.
+	private Cons cons;
+	
+	public Begin( Cons c) {
+		this.cons=c;
+	}
 
     void print(Node t, int n, boolean p) {
-    	System.out.println("SPECIAL[begin]");
+    	for(int i=0; i<n; i++)
+    		System.out.print(" ");
+    	if(!p)
+    		System.out.print("(");
+    	System.out.println("begin");
+    	if(t.getCdr()!=null)
+	    	printElements((Cons)t.getCdr(), n+4, false);
+    	for(int i=0; i<n; i++)
+    		System.out.print(" ");
+    	System.out.print(")");
     }
+    
+    void printElements(Cons t, int n, boolean isQuote) {
+    	if (isQuote) {
+    		System.out.print(" ");
+    		t.getCar().printQuote(n, false);
+    	} else {
+    		t.getCar().print(n);
+    		System.out.println();
+    	}
+    	
+    	if(t.getCdr()!=null)
+    		printElements((Cons)t.getCdr(), n, isQuote);
+    }
+
+	@Override
+	void printQuote(Node t, int n, boolean p) {
+		if(!p)
+			System.out.print("(");
+		System.out.print("begin");
+		if(t.getCdr()!=null)
+	    	printElements((Cons)t.getCdr(), 0, true);
+		System.out.print(")");
+	}
 }

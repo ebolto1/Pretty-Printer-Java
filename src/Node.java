@@ -52,4 +52,8 @@ class Node {
   
   public void setCdr(Node d) {
   }
+  
+  public void printQuote(int n, boolean p){
+	  print(n, p);
+  }
 }

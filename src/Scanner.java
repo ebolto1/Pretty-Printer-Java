@@ -92,9 +92,12 @@ class Scanner {
 				try{
 					ch = (char)in.read();
 					if(ch == '\\')
-					{
+					{   buf[i]= (byte)'\\';
+						i++;
 						ch = (char)in.read();
-						switch(ch){
+						buf[i]= (byte)ch;
+						continue;
+					/*	switch(ch){
 						case'\\':
 							buf[i] = '\\';
 							continue;
@@ -112,10 +115,11 @@ class Scanner {
 							continue;
 						default:
 							throw new IllegalArgumentException("Invalid escape sequence");
-						}
+						}*/
 					}
-					if(ch == '\"')
+					if(ch == '\"'){
 						break;
+					}
 					buf[i] = (byte)ch;   			   			
 				}
 				catch(IOException e){

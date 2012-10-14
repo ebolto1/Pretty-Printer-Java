@@ -8,7 +8,12 @@ class Quote extends Special {
 	}
 
     void print(Node t, int n, boolean p) {
-    	System.out.print("QUOTE " );
-    	list.print(n);
+    	System.out.print("'");
+    	((Cons)list.getCar()).printQuote(n, false);
     }
+
+	@Override
+	void printQuote(Node t, int n, boolean p) {
+		print(t, n, p);
+	}
 }
