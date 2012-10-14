@@ -35,6 +35,18 @@ class Cons extends Node {
 			} else {
 				form = new Regular(idName);
 			}
+		} else if (car instanceof IntLit) {
+			IntLit i = (IntLit)car;
+			form = new Regular(Integer.toString(i.getVal()));
+		} else if (car instanceof StrLit) {
+			StrLit s = (StrLit)car;
+			form= new Regular("\""+s.getVal()+"\"");
+		} else if (car instanceof BooleanLit) {
+			BooleanLit b = (BooleanLit)car;
+			form = new Regular(Boolean.toString(b.getVal()));
+		} else if (car instanceof Nil) {
+			Nil n= (Nil)car;
+			form = new Regular("");
 		}
 	}
 	// TODO: Add any helper functions for parseList as appropriate.

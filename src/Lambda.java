@@ -8,5 +8,6 @@ class Lambda extends Special {
     // TODO: Add an appropriate constructor.
 
     void print(Node t, int n, boolean p) {
+    	System.out.println("SPECIAL[lambda]");
     }
 }

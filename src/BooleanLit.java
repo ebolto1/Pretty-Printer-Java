@@ -18,6 +18,10 @@ class BooleanLit extends Node {
     }
   }
   
+  public boolean getVal(){
+	  return booleanVal;
+  }
+  
   @Override
   public boolean isBoolean(){
 	  return true;

@@ -11,6 +11,10 @@ class StrLit extends Node {
     System.out.println("\"" + strVal + "\"");
   }
   
+  public String getVal(){
+	  return strVal;
+  }
+  
   @Override
   public boolean isString(){
 	  return true;
