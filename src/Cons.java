@@ -33,20 +33,22 @@ class Cons extends Node {
 			} else if (idName.equals("set!")) {
 				form = new Set();
 			} else {
-				form = new Regular(idName);
+				form = new Regular(idName, this);
 			}
 		} else if (car instanceof IntLit) {
 			IntLit i = (IntLit)car;
-			form = new Regular(Integer.toString(i.getVal()));
+			form = new Regular(Integer.toString(i.getVal()), this);
 		} else if (car instanceof StrLit) {
 			StrLit s = (StrLit)car;
-			form= new Regular("\""+s.getVal()+"\"");
+			form= new Regular(s.getVal(), this);
 		} else if (car instanceof BooleanLit) {
 			BooleanLit b = (BooleanLit)car;
-			form = new Regular(Boolean.toString(b.getVal()));
+			form = new Regular(Boolean.toString(b.getVal()), this);
 		} else if (car instanceof Nil) {
 			Nil n= (Nil)car;
-			form = new Regular("");
+			form = new Regular("", this);
+		} else {
+			form= new Regular ("(", this);
 		}
 	}
 	// TODO: Add any helper functions for parseList as appropriate.
@@ -59,7 +61,9 @@ class Cons extends Node {
 
 	void print(int n) {
 		form.print(this, n, false);
-		if (cdr != null) cdr.print(n);
+	//	if (car instanceof Cons)
+		//	car.print(n);
+	//	if (cdr != null) cdr.print(n);
 	}
 
 	void print(int n, boolean p) {

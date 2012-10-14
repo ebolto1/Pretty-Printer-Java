@@ -8,6 +8,7 @@ class Quote extends Special {
 	}
 
     void print(Node t, int n, boolean p) {
-    	System.out.println("QUOTE");
+    	System.out.print("QUOTE " );
+    	list.print(n);
     }
 }
