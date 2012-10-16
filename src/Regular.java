@@ -10,7 +10,7 @@ class Regular extends Special {
     		System.out.print("(");
     	
     	
-    	if (cons.getCar() instanceof Cons) {
+    	if (cons.getCar() instanceof Cons || cons.getCar() instanceof Nil) {
 			//cons.getCar().print(0, false);
     		cons.getCar().print(n, false);
     	}
