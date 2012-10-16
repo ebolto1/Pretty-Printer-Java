@@ -11,10 +11,12 @@ class Regular extends Special {
     	
     	
     	if (cons.getCar() instanceof Cons) {
-			cons.getCar().print(0, false);	
+			//cons.getCar().print(0, false);
+    		cons.getCar().print(n, false);
     	}
     	else { 
-    		cons.getCar().print(0, true);
+    		//cons.getCar().print(0, true);
+    		cons.getCar().print(n, true);
     	}
 
     	
@@ -23,7 +25,8 @@ class Regular extends Special {
     	
 		
     	if (cons.getCdr() != null) {
-			cons.getCdr().print(0, true);
+			//cons.getCdr().print(0, true);
+    		cons.getCdr().print(n, true);
 		}
 		else {
 			System.out.print(")");		

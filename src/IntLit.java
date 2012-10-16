@@ -4,9 +4,6 @@ class IntLit extends Node {
   public IntLit(int i) { intVal = i; }
 
   public void print(int n) {
-    for (int i = 0; i < n; i++)
-      System.out.print(" ");
-
     System.out.print(intVal);
   }
 

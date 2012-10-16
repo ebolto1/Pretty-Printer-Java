@@ -5,13 +5,11 @@ class Ident extends Node {
   
   public void print(int n, boolean parenPrintedLast){
 	  if(parenPrintedLast)
-		print(0);
+		print(n);
 	  else print(n); 
   }
 
   public void print(int n) {
-	  for (int i = 0; i < n; i++)
-		  System.out.print(" ");
     System.out.print(name);
   }
   

@@ -21,9 +21,8 @@ class If extends Special {
     		System.out.print(" ");
     		t.getCar().printQuote(n, false);
     	} else {
-    		if (t.getCar() instanceof Cons)
-    			for(int i=0; i<n; i++)
-            		System.out.print(" ");
+		for(int i=0; i<n; i++)
+        		System.out.print(" ");
     		t.getCar().print(n);
     		System.out.println();
     	}
