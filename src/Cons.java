@@ -57,9 +57,6 @@ class Cons extends Node {
 
 	void print(int n) {
 		form.print(this, n, false);
-	//	if (car instanceof Cons)
-		//	car.print(n);
-	//	if (cdr != null) cdr.print(n);
 	}
 
 	void print(int n, boolean p) {

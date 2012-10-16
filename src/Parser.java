@@ -47,7 +47,7 @@ class Parser {
 	  if (t == null) { //EOF
 		  exp = null;
 	  } else if (t.getType() == TokenType.LPAREN) {
-		  exp = parseRest();
+		  exp = parseRest(true);
 	  } else if (t.getType() == TokenType.FALSE) {
 		  exp = falseLit;
 	  } else if (t.getType() == TokenType.TRUE) {
@@ -73,18 +73,19 @@ class Parser {
     return exp;
   }
   
-  protected Node parseRest() {
+  protected Node parseRest(boolean first) {
 	    // TODO: write code for parsing rest
 	      Token t= scanner.getNextToken();
 	      Node exp= null;
 	      if(t == null) {
-	          exp=null;
-	      } else if (t.getType() == TokenType.RPAREN){
-	          return null;
-	      } else if (t.getType() == TokenType.DOT){
+	          exp = null;
+	      } else if (t.getType() == TokenType.RPAREN) {
+	    	  if (first) return nil;
+	    	  else return null;
+	      } else if (t.getType() == TokenType.DOT) {
 	          //lookahead
 	          t=scanner.getNextToken();
-	          if(t.getType() != TokenType.RPAREN){
+	          if(t.getType() != TokenType.RPAREN) {
 	              scanner.putTokenBack(t);
 	              exp = new Cons(parseExp(), null);
 	          } else {
@@ -93,7 +94,7 @@ class Parser {
 	          }
 	      } else { //exp
 	    	  scanner.putTokenBack(t);
-	          exp= new Cons(parseExp(), parseRest());
+	          exp= new Cons(parseExp(), parseRest(false));
 	      }
 	   
 	    return exp;
