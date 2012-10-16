@@ -10,7 +10,7 @@ class Cond extends Special {
     	}
 		for(int i=0; i<n; i++)
 			System.out.print(" ");
-    	System.out.println(")");
+    	System.out.print(")");
     }
     void printElements(Cons t, int n, boolean isQuote) {
     	if (isQuote) {
@@ -21,7 +21,7 @@ class Cond extends Special {
     			for(int i=0; i<n; i++)
             		System.out.print(" ");
     		t.getCar().print(n);
-    		System.out.println(); //This line dbl prints for nested special forms
+    		System.out.println();
     	}
     	
     	if(t.getCdr()!=null)
