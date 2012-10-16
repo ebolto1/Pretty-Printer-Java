@@ -1,7 +1,5 @@
 // Main.java -- the main program
 
-import java.io.*;
-
 public class Main {
     // Array of token names used for debugging the scanner
     public static final String TokenName[] = {
@@ -53,6 +51,7 @@ public class Main {
 	root = parser.parseExp();
 	while (root != null) {
 	    root.print(0);
+	    System.out.println();
 	    root = parser.parseExp();
 	}
 	System.exit(0);

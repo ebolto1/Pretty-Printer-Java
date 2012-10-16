@@ -1,28 +1,23 @@
-import java.io.*;
-
 class Define extends Special {
+	public Define() { }
 
-	Cons cons;
-	
-	public Define( Cons c) {
-		this.cons=c;
-	}
-
-    void print(Node t, int n, boolean p) {
-    	for(int i=0; i<n; i++)
-    		System.out.print(" ");
+	void print(Node t, int n, boolean p) {
+    	//for(int i=0; i<n; i++)
+    		//System.out.print(" ");
     	if(!p)
     		System.out.print("(");
     	System.out.print("define ");
     	if(t.getCdr()!=null){
-    		t.getCdr().getCar().print(0, false);
+    		t.getCdr().getCar().print(n+4, false);
     		System.out.println();
+    		for(int i=0; i<n; i++) //added this loop, removed other two that are commented out.
+	    		System.out.print(" ");
     		if(t.getCdr().getCdr()!=null)
         		printElements((Cons)t.getCdr().getCdr(), n+4, false);
     	}
     	
-    	for(int i=0; i<n; i++)
-    		System.out.print(" ");
+    	/*for(int i=0; i<n; i++)
+    		System.out.print(" ");*/
     	System.out.print(")");
     }
     
@@ -43,7 +38,7 @@ class Define extends Special {
 	void printQuote(Node t, int n, boolean p) {
 		if(!p)
 			System.out.print("(");
-		System.out.print("begin");
+		System.out.print("define");
 		if(t.getCdr()!=null)
 	    	printElements((Cons)t.getCdr(), 0, true);
 		System.out.print(")");

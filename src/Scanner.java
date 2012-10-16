@@ -144,7 +144,6 @@ class Scanner {
 			int j=0;
 			try{	
 				for(j=0; j<buf.length; j++){
-					byte i = (byte) (ch - '0');
 					buf[j]=(byte)ch;
 					bite= in.read();
 					ch= (char) bite;

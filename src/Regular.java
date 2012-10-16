@@ -1,16 +1,11 @@
-import java.io.*;
-
 class Regular extends Special {
 	private Cons cons;
 	
 	public Regular( Cons c) {
-		this.cons=c;
-		
+		this.cons=c;	
 	}
 	
     void print(Node t, int n, boolean p) {
-    	for(int i=0; i<n; i++)
-    		System.out.print(" ");
     	if(!p)
     		System.out.print("(");
     	

@@ -1,28 +1,18 @@
-import java.io.*;
-
 class If extends Special {
- 
-	Cons cons;
-	
-	public If( Cons c) {
-		this.cons=c;
-	}
+	public If() { }
 
     void print(Node t, int n, boolean p) {
-    	for(int i=0; i<n; i++)
-    		System.out.print(" ");
     	if(!p)
     		System.out.print("(");
     	System.out.print("if ");
     	if(t.getCdr()!=null){
-    		t.getCdr().getCar().print(0, false);
+    		t.getCdr().getCar().print(n+4, false);
     		System.out.println();
+    		for(int i=0; i<n; i++)
+	    		System.out.print(" ");
     		if(t.getCdr().getCdr()!=null)
         		printElements((Cons)t.getCdr().getCdr(), n+4, false);
     	}
-    	
-    	for(int i=0; i<n; i++)
-    		System.out.print(" ");
     	System.out.print(")");
     }
     

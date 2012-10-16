@@ -1,4 +1,3 @@
-import java.io.*;
 class StrLit extends Node {
   private String strVal;
 
@@ -8,7 +7,7 @@ class StrLit extends Node {
     for (int i = 0; i < n; i++)
       System.out.print(" ");
 
-    System.out.println("\"" + strVal + "\"");
+    System.out.print("\"" + strVal + "\"");
   }
   
   public String getVal(){

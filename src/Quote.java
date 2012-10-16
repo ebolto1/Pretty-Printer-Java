@@ -1,5 +1,3 @@
-import java.io.*;
-
 class Quote extends Special {
 	private Cons list = null;
 	

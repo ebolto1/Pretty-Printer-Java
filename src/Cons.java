@@ -19,33 +19,29 @@ class Cons extends Node {
 			if (idName.equals("quote") || idName.equals("'")) {
 				form = new Quote((Cons)cdr);
 			} else if (idName.equals("lambda")) {
-				form = new Lambda(this);
+				form = new Lambda();
 			} else if (idName.equals("begin")) {
-				form = new Begin(this);
+				form = new Begin();
 			} else if (idName.equals("if")) {
-				form = new If(this);
+				form = new If();
 			} else if (idName.equals("let")) {
-				form = new Let(this);
+				form = new Let();
 			} else if (idName.equals("cond")) {
-				form = new Cond(this);
+				form = new Cond();
 			} else if (idName.equals("define")) {
-				form = new Define(this);
+				form = new Define();
 			} else if (idName.equals("set!")) {
 				form = new Set(this);
 			} else {
 				form = new Regular(this);
 			}
 		} else if (car instanceof IntLit) {
-			IntLit i = (IntLit)car;
 			form = new Regular(this);
 		} else if (car instanceof StrLit) {
-			StrLit s = (StrLit)car;
 			form= new Regular(this);
 		} else if (car instanceof BooleanLit) {
-			BooleanLit b = (BooleanLit)car;
 			form = new Regular(this);
 		} else if (car instanceof Nil) {
-			Nil n= (Nil)car;
 			form = new Regular(this);
 		} else {
 			form= new Regular (this);
@@ -70,7 +66,6 @@ class Cons extends Node {
 		form.print(this, n, p);
 	}
 	
-	//TODO: What the hell is a pair?
 	@Override
 	public boolean isPair() {
 		return car != null && cdr != null;
